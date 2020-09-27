@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intensivão AngularJS e Java | Hands-ON #1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+
+    <style>
+      .match {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .match__team {
+        position: relative;
+        padding: 15px;
+      }
+
+      .match__team:first-child .match__team--bg {
+        border-left: 3px solid red;
+      }
+      .match__team:last-child .match__team--bg {
+        border-right: 3px solid blue;
+      }
+      .match__team--bg {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0;
+        left: 0;
+        transform: skew(-25deg);
+        z-index: -1;
+      }
+      .match__team--control {
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        border: 1px solid #dddddd;
+        background-color: #fefefe;
+      }
+      .match__team--name {
+        text-align: center;
+      }
+      .match__team--name:not(:focus) {
+        border: none;
+      }
+      .match__score {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <cb-match-list></cb-match-list>
+
+    <script>
+      // conectar o HTML com o angular
+      var app = angular.module("app", []);
+
+      app.component("cbMatchList", {
+        templateUrl: "cb-match-list.html",
+        controller: function ($scope) {
+          // variáveis: estado (dados)
+
+          // Guardar todas as partidas em um Array
+          $scope.matches = [];
+
+          // funções: mudar o estado (mudar os dados)
+          $scope.addA = function (match) {
+            match.scoreA++;
+          };
+
+          $scope.addB = function (match) {
+            match.scoreB++;
+          };
+
+          $scope.decreaseA = function (match) {
+            if (match.scoreA > 0) {
+              match.scoreA--;
+            }
+          };
+
+          $scope.decreaseB = function (match) {
+            if (match.scoreB > 0) {
+              match.scoreB--;
+            }
+          };
+
+          $scope.finish = function (match) {
+            match.status = "Encerrada";
+            match.done = true;
+          };
+
+          $scope.save = function () {
+            alert(
+              "TODO: Enviar dados para o Servidor Java:\n\n" +
+                JSON.stringify($scope.matches)
+            );
+          };
+
+          $scope.create = function () {
+            var m = {
+              scoreA: 0,
+              scoreB: 0,
+              teamA: "Mandante",
+              teamB: "Visitante",
+              done: false,
+              status: "Jogando",
+            };
+
+            $scope.matches.push(m);
+          };
+        },
+      });
+    </script>
+  </body>
+</html>
