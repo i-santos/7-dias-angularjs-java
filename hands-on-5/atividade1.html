@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intensivão AngularJS e Java | Hands-ON #1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+  </head>
+  <body>
+    <cb-counter></cb-counter>
+
+    <script>
+      // conectar o HTML com o angular
+      var app = angular.module("app", []);
+
+      app.component("cbCounter", {
+        templateUrl: "cb-counter.html",
+        controller: function ($scope) {
+          $scope.count = 0;
+          $scope.add = function () {
+            $scope.count++;
+          };
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<h1>Partidas</h1>
+<button ng-click="save()">Salvar</button>
+<button ng-click="create()">Adicionar Partida</button>
+<!-- Partidas -->
+<div ng-repeat="match in matches" class="match">
+  <!-- Time A -->
+  <div class="match__team">
+    <div class="match__team--bg"></div>
+    <button
+      class="match__team--control"
+      ng-if="!match.done"
+      ng-click="decreaseA(match)"
+    >
+      -
+    </button>
+    <input
+      class="match__team--name"
+      ng-disabled="match.done"
+      type="text"
+      ng-model="match.teamA"
+    />
+    <button
+      class="match__team--control"
+      ng-if="!match.done"
+      ng-click="addA(match)"
+    >
+      +
+    </button>
+  </div>
+  <!-- Placar -->
+  <div class="match__score">
+    <p>{{ match.status }}</p>
+    <p>{{ match.scoreA }} - {{ match.scoreB }}</p>
+    <p ng-if="!match.done">
+      <a href="" ng-click="finish(match)">Finalizar</a>
+    </p>
+  </div>
+  <!-- Time B -->
+  <div class="match__team">
+    <div class="match__team--bg"></div>
+    <button
+      class="match__team--control"
+      ng-if="!match.done"
+      ng-click="decreaseB(match)"
+    >
+      -
+    </button>
+    <input
+      class="match__team--name"
+      ng-disabled="match.done"
+      type="text"
+      ng-model="match.teamB"
+    />
+    <button
+      class="match__team--control"
+      ng-if="!match.done"
+      ng-click="addB(match)"
+    >
+      +
+    </button>
+  </div>
+</div>
+<!-- FIM das Partidas -->

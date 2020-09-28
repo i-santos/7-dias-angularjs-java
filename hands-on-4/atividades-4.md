@@ -23,7 +23,7 @@
 
 #### Atividade 2 - Criar o mais simples dos servidores
 
-- [ ] Instancie um `SocketServer` (pode ser na porta 5555 mesmo)
+- [ ] Instancie um `ServerSocket` (pode ser na porta 5555 mesmo)
 
   ```java
   // Instanciar socket
