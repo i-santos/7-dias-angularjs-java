@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/media/igor/dados/cerebrobinario/hands-on/7-dias-angularjs-java/hands-on-6/**/*.jar"
+    ]
+}
