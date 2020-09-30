@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -25,15 +26,14 @@ public class App {
             InputStreamReader leitorBytes = new InputStreamReader(bytesChegando);
 
             // Colocar os bytes lidos em um objeto que consiga tranformar os bytes pra
+            // String
             BufferedReader leitorString = new BufferedReader(leitorBytes);
 
+            // Iniciar o request
             String request = "";
 
+            // Ler a primeira linha
             String line = leitorString.readLine();
-
-            if (line == null) {
-                line = "";
-            }
 
             if (line.startsWith("GET")) {
                 // GET request
@@ -53,8 +53,14 @@ public class App {
                 // POST request
 
                 // Ler os headers
+                int totalBytes = 0;
                 while (true) {
                     line = leitorString.readLine();
+
+                    if (line.startsWith("Content-Length")) {
+                        String[] slices = line.split(" ");
+                        totalBytes = Integer.parseInt(slices[1]);
+                    }
 
                     if (line.isEmpty()) {
                         break;
@@ -62,10 +68,22 @@ public class App {
                 }
 
                 // Ler os dados
+                int nBytes = 0; // contador de bytes
+                ByteArrayOutputStream out = new ByteArrayOutputStream(); // final de bytes
+                int buffer; // buffer
+
                 while (true) {
-                    line = leitorString.readLine();
-                    request += line + "\n";
+                    buffer = leitorString.read();
+                    nBytes++;
+                    out.write(buffer);
+
+                    if (nBytes >= totalBytes) {
+                        break;
+                    }
                 }
+
+                // Usar o out para construir a request
+                request = out.toString();
 
             } else if (line.startsWith("OPTIONS")) {
                 // OPTIONS request
@@ -78,13 +96,20 @@ public class App {
 
             System.out.println(request);
 
-            String responseHttp = "HTTP/1.1 200 OK\n" + "Access-Control-Allow-Origin: *\n"
-                    + "Access-Control-Allow-Method: OPTIONS,POST\n" + "Accept: application/json\n"
-                    + "Content-Type: text/html\n\n" + request;
+            String responseHttp = "HTTP/1.1 200 OK\n" 
+                + "Access-Control-Allow-Origin: *\n"
+                + "Access-Control-Allow-Headers: *\n" 
+                + "Content-Type: application/json\n\n"
+                + request;
 
             byte[] bytesResponse = responseHttp.getBytes();
 
             connection.getOutputStream().write(bytesResponse);
+
+            // fechar tudo
+            leitorString.close();
+            leitorBytes.close();
+            bytesChegando.close();
             connection.close();
         }
 

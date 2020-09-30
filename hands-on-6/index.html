@@ -67,6 +67,15 @@
           // Guardar todas as partidas em um Array
           $scope.matches = [];
 
+          $http.get("http://localhost:5555").then(
+            function (response) {
+              $scope.matches = response.data;
+            },
+            function (error) {
+              console.log("Deu erro");
+            }
+          );
+
           // funções: mudar o estado (mudar os dados)
           $scope.addA = function (match) {
             match.scoreA++;
@@ -95,7 +104,7 @@
 
           $scope.save = function () {
             // Fazer uma requisição HTTP GET
-            $http.post("http://localhost:5555", "END").then(
+            $http.post("http://localhost:5555", $scope.matches).then(
               function (response) {
                 console.log(response.data);
               },
